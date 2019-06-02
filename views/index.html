@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+  <style>
+    .timestamp-container {
+      height: 100vh;
+    }
+
+    section h4 {
+      text-align: center;
+    }
+
+    .url-form {
+      border: solid black 1px
+    }
+  </style>
+</head>
+
+<body onload="myFunction()">
+  <div class="timestamp-container container d-flex flex-column align-items-center justify-content-around">
+    <h3>API Project: URL Shortener Microservice</h3>
+    <section>
+      <h4>User Stories (WIP):</h4>
+      <ol>
+        <li>
+          I can POST a URL to [project_url]/api/shorturl/new and I will receive a shortened URL in the JSON response.
+          Example : {"original_url":"www.google.com","short_url":1}
+        </li>
+        <li>
+          If I pass an invalid URL that doesn't follow the http(s)://www.example.com(/more/routes) format, the JSON
+          response will contain an error like {"error":"invalid URL"}
+          HINT: to be sure that the submitted url points to a valid site you can use the function dns.lookup(host, cb)
+          from the dns core module.
+        </li>
+        <li>
+          When I visit the shortened URL, it will redirect me to my original link.
+        </li>
+      </ol>
+    </section>
+    <section>
+      <h4>Short Url Creation</h4>
+      <ol>
+        <li>POST: <a class="usage" target="_blank" aria-disabled="true" rel="noopener noreferrer">/api/shorturl/new -
+            https://www.google.com</a></li>
+      </ol>
+      <div class="d-flex justify-content-center">
+        <form class="url-form px-5 py-3" action="/new" method="post">
+          URL: <input type="text" value="www.freecodecamp.org" name="fname">
+          <input type="submit" value="Submit">
+        </form>
+      </div>
+    </section>
+    <section class="d-flex flex-column justify-content-center align-items-center">
+      <h4>Example Output:</h4>
+      <p>{"ipaddress":"::1","languages":"en-US,en;q=0.9,es;q=0.8,fil;q=0.7","software":"Mozilla/5.0 (Windows NT 10.0;
+        Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/74.0.3729.169 Safari/537.36"}</p>
+    </section>
+    <section class="d-flex flex-column justify-content-center align-items-center">
+      <h6>
+        Github:
+        <a target="_blank" rel="noopener noreferrer" href="https://github.com/gpbaculio/fcc-header-parser">
+          FCC Request Header Parser Microservice
+        </a>
+      </h6>
+      <h6>by <a target="_blank" rel="noopener noreferrer" href="bit.ly/gpbaculio">Glendon Philipp B.
+          Baculio</a> </h6>
+    </section>
+  </div>
+  <script>
+    const myFunction = () => {
+      Array.from(document.getElementsByClassName("usage")).map(usage => {
+        const link = window.location.href.concat(
+          usage.innerHTML)
+        usage.innerHTML = link
+      })
+    }
+  </script>
+</body>
+
+</html>
