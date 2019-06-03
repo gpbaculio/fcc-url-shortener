@@ -1,0 +1,1 @@
+{"version":3,"file":"UrlRoutes.js","sourceRoot":"","sources":["../../lib/routes/UrlRoutes.ts"],"names":[],"mappings":";;AAAA,gEAAyD;AAEzD,MAAqB,SAAS;IAA9B;QACS,kBAAa,GAAkB,IAAI,uBAAa,EAAE,CAAC;IAI5D,CAAC;IAHQ,MAAM,CAAC,GAAG;QACf,GAAG,CAAC,KAAK,CAAC,mBAAmB,CAAC,CAAC,IAAI,CAAC,IAAI,CAAC,aAAa,CAAC,MAAM,CAAC,CAAC;IACjE,CAAC;CACF;AALD,4BAKC"}

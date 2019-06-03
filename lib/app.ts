@@ -3,12 +3,12 @@ import * as mongoose from 'mongoose';
 const bodyParser = require('body-parser');
 var cors = require('cors');
 
-import WhoAmIRoute from './routes/UrlRoutes';
+import UrlRoutes from './routes/UrlRoutes';
 import ViewsRoutes from './routes/ViewsRoutes';
 
 class App {
   public app: express.Application = express();
-  public whoAmIRoutes: WhoAmIRoute = new WhoAmIRoute();
+  public urlRoutes: UrlRoutes = new UrlRoutes();
   public viewsRoutes: ViewsRoutes = new ViewsRoutes();
 
   private mongoSetup(): void {
@@ -30,7 +30,7 @@ class App {
     );
     this.app.use(cors({ optionSuccessStatus: 200 })); // some legacy browsers choke on 204
     this.app.use(bodyParser.json());
-    this.whoAmIRoutes.routes(this.app);
+    this.urlRoutes.routes(this.app);
     this.viewsRoutes.routes(this.app);
   }
 }

@@ -23,7 +23,7 @@
   </style>
 </head>
 
-<body onload="myFunction()">
+<body onload="onLoad()">
   <div class="timestamp-container container d-flex flex-column align-items-center justify-content-around">
     <h3>API Project: URL Shortener Microservice</h3>
     <section>
@@ -47,12 +47,12 @@
     <section>
       <h4>Short Url Creation</h4>
       <ol>
-        <li>POST: <a class="usage" target="_blank" aria-disabled="true" rel="noopener noreferrer">/api/shorturl/new -
+        <li>POST: <a class="usage" target="_blank" aria-disabled="true" rel="noopener noreferrer">api/shorturl/new -
             https://www.google.com</a></li>
       </ol>
       <div class="d-flex justify-content-center">
-        <form class="url-form px-5 py-3" action="/new" method="post">
-          URL: <input type="text" value="www.freecodecamp.org" name="fname">
+        <form class="url-form px-5 py-3" action="/api/shorturl/new" method="post">
+          URL: <input id="input-url" type="text" name="url">
           <input type="submit" value="Submit">
         </form>
       </div>
@@ -74,13 +74,18 @@
     </section>
   </div>
   <script>
-    const myFunction = () => {
+    const onLoad = () => {
       Array.from(document.getElementsByClassName("usage")).map(usage => {
-        const link = window.location.href.concat(
-          usage.innerHTML)
-        usage.innerHTML = link
+        usage.innerHTML = window.location.href.concat(usage.innerHTML)
       })
     }
+    const editInput = document.getElementById('input-url');
+    let inputval = 'www.freecodecamp.org'
+    editInput.value = inputval
+    editInput.addEventListener('input', e => {
+      editInput.value = e.target.value;
+      console.log('editInput !', editInput)
+    })
   </script>
 </body>
 
