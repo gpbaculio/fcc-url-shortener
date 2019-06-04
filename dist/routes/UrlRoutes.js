@@ -7,6 +7,9 @@ class UrlRoutes {
     }
     routes(app) {
         app.route('/api/shorturl/new').post(this.urlController.newUrl);
+        app
+            .route('/api/shorturl/:shortUrlNum')
+            .get(this.urlController.handleRedirect);
     }
 }
 exports.default = UrlRoutes;

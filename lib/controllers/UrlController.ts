@@ -21,16 +21,36 @@ export default class WhoAmIController {
   public newUrl = async (req: Request, res: Response) => {
     const { url: original_url } = req.body;
     if (this.isValidUrl(original_url)) {
-      const shortUrl = this.generateNum();
-      const url = await new Url({ originalUrl: original_url, shortUrl });
+      const shortUrlNum = this.generateNum();
+      const url = await new Url({
+        originalUrl: original_url,
+        shortUrl: shortUrlNum
+      });
       url
         .save()
         .then(() => {
-          res.json({ original_url, shortUrl });
+          res.json({ original_url, shortUrl: shortUrlNum });
         })
         .catch(error => res.json({ error }));
     } else {
-      res.json({ error: 'invalid URL' });
+      res.json({ error: 'invalid Url' });
+    }
+  };
+  handleRedirect = async (req: Request, res: Response) => {
+    const shortUrlNum = Number(req.params.shortUrlNum);
+    if (!isNaN(shortUrlNum)) {
+      Url.findOne(
+        { shortUrl: shortUrlNum },
+        (err, result: { originalUrl; shortUrl }) => {
+          if (!err) {
+            res.redirect(result.originalUrl);
+          } else {
+            res.json({ error: err });
+          }
+        }
+      );
+    } else {
+      res.json({ error: 'Wrong Format' });
     }
   };
 }
