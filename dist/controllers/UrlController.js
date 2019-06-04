@@ -13,7 +13,10 @@ class WhoAmIController {
     constructor() {
         this.isValidUrl = (url) => {
             const test = url.match(/(http(s)?:\/\/.)?(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)/g);
-            return test === null ? false : true;
+            if (test)
+                return true;
+            else
+                return false;
         };
         this.generateNum = () => __awaiter(this, void 0, void 0, function* () {
             const num = Math.floor(Math.random() * 1000000000);
@@ -56,15 +59,21 @@ class WhoAmIController {
             else
                 res.json({ error: 'invalid Url' });
         });
+        this.isHttp = url => {
+            const regEx = new RegExp('^(http|https)://', 'i');
+            if (regEx.test(url))
+                return true;
+            else
+                return false;
+        };
         this.handleRedirect = (req, res) => __awaiter(this, void 0, void 0, function* () {
             const shortUrlNum = Number(req.params.shortUrlNum);
             if (!isNaN(shortUrlNum)) {
                 yield Url_1.default.findOne({ shortUrl: shortUrlNum }, (err, result) => {
                     if (!err) {
                         if (result !== null) {
-                            const regEx = new RegExp('^(http|https)://', 'i');
                             const url = `${result.originalUrl}`;
-                            if (regEx.test(url)) {
+                            if (this.isHttp(url)) {
                                 res.redirect(url);
                             }
                             else {
