@@ -1,5 +1,10 @@
 import * as mongoose from 'mongoose';
 
+export interface UrlInterface extends mongoose.Document {
+  originalUrl: String;
+  shortUrl: Number;
+}
+
 const UrlSchema = new mongoose.Schema(
   {
     originalUrl: String,
@@ -11,4 +16,4 @@ const UrlSchema = new mongoose.Schema(
   }
 );
 
-export default mongoose.model('Url', UrlSchema);
+export default mongoose.model<UrlInterface>('Url', UrlSchema);

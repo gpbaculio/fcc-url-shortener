@@ -23,21 +23,35 @@ class WhoAmIController {
             else
                 return num;
         });
+        this.findUrl = (originalUrl) => __awaiter(this, void 0, void 0, function* () {
+            const url = yield Url_1.default.findOne({ originalUrl });
+            if (url)
+                return url;
+            else
+                return null;
+        });
         this.newUrl = (req, res) => __awaiter(this, void 0, void 0, function* () {
             const { url: original_url } = req.body;
             if (this.isValidUrl(original_url)) {
-                const shortUrlNum = yield this.generateNum();
-                const url = yield new Url_1.default({
-                    originalUrl: original_url,
-                    shortUrl: shortUrlNum
-                });
-                url
-                    .save()
-                    .then(() => {
-                    console.log('add!');
-                    res.json({ original_url, shortUrl: shortUrlNum });
-                })
-                    .catch(error => res.json({ error }));
+                let url = yield this.findUrl(original_url);
+                if (url !== null)
+                    return res.json({
+                        original_url: url.originalUrl,
+                        short_url: url.shortUrl
+                    });
+                else {
+                    const shortUrlNum = yield this.generateNum();
+                    url = yield new Url_1.default({
+                        originalUrl: original_url,
+                        shortUrl: shortUrlNum
+                    });
+                    url
+                        .save()
+                        .then(() => {
+                        res.json({ original_url, shortUrl: shortUrlNum });
+                    })
+                        .catch(error => res.json({ error }));
+                }
             }
             else
                 res.json({ error: 'invalid Url' });
@@ -45,10 +59,18 @@ class WhoAmIController {
         this.handleRedirect = (req, res) => __awaiter(this, void 0, void 0, function* () {
             const shortUrlNum = Number(req.params.shortUrlNum);
             if (!isNaN(shortUrlNum)) {
-                Url_1.default.findOne({ shortUrl: shortUrlNum }, (err, result) => {
+                yield Url_1.default.findOne({ shortUrl: shortUrlNum }, (err, result) => {
                     if (!err) {
-                        if (result)
-                            res.redirect(result.originalUrl);
+                        if (result !== null) {
+                            const regEx = new RegExp('^(http|https)://', 'i');
+                            const url = `${result.originalUrl}`;
+                            if (regEx.test(url)) {
+                                res.redirect(url);
+                            }
+                            else {
+                                res.redirect(`http://${url}`);
+                            }
+                        }
                         else
                             res.json({ error: 'Cannot find Shortened Url in database' });
                     }
