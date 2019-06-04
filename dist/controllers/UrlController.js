@@ -15,21 +15,18 @@ class WhoAmIController {
             const test = url.match(/(http(s)?:\/\/.)?(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)/g);
             return test === null ? false : true;
         };
-        this.generateNum = () => {
+        this.generateNum = () => __awaiter(this, void 0, void 0, function* () {
             const num = Math.floor(Math.random() * 1000000000);
-            Url_1.default.findOne({ shortenUrl: num }, function (_err, result) {
-                if (result) {
-                    return this.generateNum();
-                }
-                else {
-                    return num;
-                }
-            });
-        };
+            const url = yield Url_1.default.findOne({ shortUrl: num });
+            if (url)
+                return this.generateNum();
+            else
+                return num;
+        });
         this.newUrl = (req, res) => __awaiter(this, void 0, void 0, function* () {
             const { url: original_url } = req.body;
             if (this.isValidUrl(original_url)) {
-                const shortUrlNum = this.generateNum();
+                const shortUrlNum = yield this.generateNum();
                 const url = yield new Url_1.default({
                     originalUrl: original_url,
                     shortUrl: shortUrlNum
@@ -37,20 +34,23 @@ class WhoAmIController {
                 url
                     .save()
                     .then(() => {
+                    console.log('add!');
                     res.json({ original_url, shortUrl: shortUrlNum });
                 })
                     .catch(error => res.json({ error }));
             }
-            else {
+            else
                 res.json({ error: 'invalid Url' });
-            }
         });
         this.handleRedirect = (req, res) => __awaiter(this, void 0, void 0, function* () {
             const shortUrlNum = Number(req.params.shortUrlNum);
             if (!isNaN(shortUrlNum)) {
                 Url_1.default.findOne({ shortUrl: shortUrlNum }, (err, result) => {
                     if (!err) {
-                        res.redirect(result.originalUrl);
+                        if (result)
+                            res.redirect(result.originalUrl);
+                        else
+                            res.json({ error: 'Cannot find Shortened Url in database' });
                     }
                     else {
                         res.json({ error: err });

@@ -3,7 +3,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const mongoose = require("mongoose");
 const UrlSchema = new mongoose.Schema({
     originalUrl: String,
-    shortUrl: String
+    shortUrl: Number
 }, {
     timestamps: true,
     versionKey: false
