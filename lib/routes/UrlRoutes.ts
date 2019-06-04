@@ -5,4 +5,5 @@ export default class UrlRoutes {
   public routes(app): void {
     app.route('/api/shorturl/new').post(this.urlController.newUrl);
   }
+  //api/shorturl/
 }

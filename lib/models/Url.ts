@@ -3,7 +3,7 @@ import * as mongoose from 'mongoose';
 const UrlSchema = new mongoose.Schema(
   {
     originalUrl: String,
-    shortenedUrl: String
+    shortUrl: String
   },
   {
     timestamps: true,
