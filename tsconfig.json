@@ -7,7 +7,6 @@
     "target": "es6",
     "outDir": "./dist",
     "baseUrl": "./lib",
-    "watch": true
   },
   "include": ["lib/**/*.ts"],
   "exclude": ["node_modules"]
